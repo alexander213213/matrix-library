@@ -2,7 +2,7 @@
 class Matrix {
     constructor(shape = [1,1], arr) {
         this.shape = shape
-        this.__array = arr
+        this.__array = arr.slice(0, shape[0] * shape[1])
         this.value = []
 
         let length = shape[0] * shape[1]
@@ -63,6 +63,15 @@ class Matrix {
         return new Matrix([A.shape[0], B.shape[1]],product)
     }
 
+    static crossMultiply(A, B) {
+        if (A.shape[0] > 1 || B.shape[0] > 1) return
+        if (A.shape[1] != 3 || B.shape[1] != 3) return
+        
+        const I = new Matrix([2,2], [A.__array[1], A.__array[2], B.__array[1], B.__array[2]])
+        const J = new Matrix([2,2], [A.__array[0], A.__array[2], B.__array[0], B.__array[2]])
+        const K = new Matrix([2,2], [A.__array[0], A.__array[1], B.__array[0], B.__array[1]])
+        return new Matrix([1,3], [I.determinant,-1 * J.determinant, K.determinant])
+    }
     
     static log(matrix) {
         let result = "[\n"
@@ -80,12 +89,12 @@ class Matrix {
 
 
 
-// const A = new Matrix([3,2], [1,2,3,4,5,6,7])
-// const B = new Matrix([2,3], [1,2,3,4,5,6,7])
+// const A = new Matrix([1,3], [1,3,4,4,5,6,7])
+// const B = new Matrix([1,3], [2,7,-5,4,5,6,7])
 
-const A = new Matrix([6,6], [2,5,3,7,3,7,7,7,1,7,7,0,5,4,2,4,3,5,4,10,1,6,7,6,8,2,5,2,6,9,6,3,4,1,5,5])
+// const A = new Matrix([6,6], [2,5,3,7,3,7,7,7,1,7,7,0,5,4,2,4,3,5,4,10,1,6,7,6,8,2,5,2,6,9,6,3,4,1,5,5])
 
 // Matrix.log(A)
-console.log(A.determinant)
+// console.log(A.determinant)
 
-// Matrix.log(Matrix.multiply(A, B))
+// Matrix.log(Matrix.crossMultiply(A, B))
