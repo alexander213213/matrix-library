@@ -38,7 +38,7 @@ class Matrix {
         if (this.shape[0] > 1) {
             for (let i = 0; i<this.shape[0]; i++) {
                 let holder = i%2 == 0 ? 1 : -1
-                let newArr = this.__array.slice(this.shape[0], this.__array.length).filter((_, index) => this.shape[0] == i+1 ? ((index + 1) % this.shape[0] != 0) : ((index + 1) % this.shape[0] != i + 1))
+                let newArr = this.__array.slice(this.shape[0], this.__array.length).filter((_, index) => ((index + 1) % this.shape[0] != i + 1))
                 let lowMatrix = new Matrix([this.shape[0]-1, this.shape[1]-1], newArr)
                 result += holder * this.__array[i] * lowMatrix.determinant
             }
