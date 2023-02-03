@@ -2,6 +2,7 @@
 class Matrix {
     constructor(shape = [1,1], arr) {
         this.shape = shape
+        this.isSquare = this.shape[0] == this.shape[1]
         this.__array = arr.slice(0, shape[0] * shape[1])
         this.value = []
 
@@ -29,7 +30,7 @@ class Matrix {
     }
     
     get determinant() {
-        if (this.shape[0] != this.shape[1]) return
+        if (!this.isSquare) return
         let result = 0
         if (this.shape[0] == 1) {
             result += this.__array[0]
@@ -38,12 +39,33 @@ class Matrix {
         if (this.shape[0] > 1) {
             for (let i = 0; i<this.shape[0]; i++) {
                 let holder = i%2 == 0 ? 1 : -1
-                let newArr = this.__array.slice(this.shape[0], this.__array.length).filter((_, index) => ((index + 1) % this.shape[0] != i + 1))
+                let newArr = this.__array.slice(this.shape[0], this.__array.length).filter((_, index) => ((index) % this.shape[0] != i))
                 let lowMatrix = new Matrix([this.shape[0]-1, this.shape[1]-1], newArr)
                 result += holder * this.__array[i] * lowMatrix.determinant
             }
             return result
         }
+    }
+    
+    get inverse() {
+        if (!this.isSquare) return
+        let arr = []
+        for (let i in this.__array) {
+            let newArr = this.__array.filter((_, index) => Math.floor(index/this.shape[0])*this.shape[0] != Math.floor(i/this.shape[0])*this.shape[0]).filter((_, index) => index % this.shape[0] != i % this.shape[0])
+            const newMatrix = new Matrix([this.shape[0]-1,this.shape[1]-1], newArr)
+            arr.push(newMatrix.determinant)
+        }
+        arr = arr.map((item, index) => index % 2 == 0 ? item : -item)
+        
+        for (let i=1; i<this.shape[0]; i++) {
+            for (let j=1; j<=this.shape[0]-i; j++) {
+                let index1 = ((i-1)*this.shape[0] + i-1 + j);
+                let index2 = (i-1)*this.shape[0] + i-1 + this.shape[0]*j;
+                [arr[index1],arr[index2]] = [arr[index2],arr[index1]];
+            }
+        }
+        arr = arr.map(item => item / this.determinant)
+        return new Matrix([this.shape[0], this.shape[0]], arr)
     }
 
     static multiply(A, B) {
@@ -88,13 +110,13 @@ class Matrix {
 
 
 
-
+// const A = new Matrix([3,3], [1,0,-3,2,-2,1,0,-1,3])
 // const A = new Matrix([1,3], [1,3,4,4,5,6,7])
 // const B = new Matrix([1,3], [2,7,-5,4,5,6,7])
 
 // const A = new Matrix([6,6], [2,5,3,7,3,7,7,7,1,7,7,0,5,4,2,4,3,5,4,10,1,6,7,6,8,2,5,2,6,9,6,3,4,1,5,5])
 
-// Matrix.log(A)
+// Matrix.log(A.inverse)
 // console.log(A.determinant)
 
 // Matrix.log(Matrix.crossMultiply(A, B))
