@@ -8,8 +8,8 @@ This library aims to be approachable for beginners so no dependencies must be us
 
 ---
 
-## Usage
-This library is not yes available in npm so cloning it would be the best way to use it in your project.  
+## Add to your project
+This library is not yet available in npm so cloning it would be the best way to use it in your project.  
 Go to your project directory in your terminal with `cd <project-directory>`
 Then clone it with:  
 ```bash
