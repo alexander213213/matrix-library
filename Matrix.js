@@ -43,7 +43,7 @@ class Matrix {
                 let lowMatrix = new Matrix([this.shape[0]-1, this.shape[1]-1], newArr)
                 result += holder * this.__array[i] * lowMatrix.determinant
             }
-            return result
+            return result.toFixed(0)
         }
     }
     
@@ -55,7 +55,13 @@ class Matrix {
             const newMatrix = new Matrix([this.shape[0]-1,this.shape[1]-1], newArr)
             arr.push(newMatrix.determinant)
         }
-        arr = arr.map((item, index) => index % 2 == 0 ? item : -item)
+        arr = arr.map((item, index) => {
+            if (Math.floor(index/this.shape[0]) % 2 == 0) {
+                return (index - Math.floor(index/this.shape[0]) * this.shape[0]) % 2 == 0 ? item : -item
+            } else {
+                return (index - Math.floor(index/this.shape[0]) * this.shape[0]) % 2 == 0 ? -item : item
+            }
+        })
         
         for (let i=1; i<this.shape[0]; i++) {
             for (let j=1; j<=this.shape[0]-i; j++) {
@@ -65,11 +71,12 @@ class Matrix {
             }
         }
         arr = arr.map(item => item / this.determinant)
+        arr = arr.map(item => item.toFixed(3))
         return new Matrix([this.shape[0], this.shape[0]], arr)
     }
 
     static multiply(A, B) {
-        if (A.length != B.value[0].length) return "Error"
+        if (A.shape[1] != B.shape[0]) return "Error"
     
         let product = []
         for (let row of A.value) {
@@ -82,6 +89,8 @@ class Matrix {
                 product.push(result)
             }
         }
+
+        product = product.map(item => item.toFixed(3))
         return new Matrix([A.shape[0], B.shape[1]],product)
     }
 
@@ -111,12 +120,12 @@ class Matrix {
 
 
 // const A = new Matrix([3,3], [1,0,-3,2,-2,1,0,-1,3])
-// const A = new Matrix([1,3], [1,3,4,4,5,6,7])
-// const B = new Matrix([1,3], [2,7,-5,4,5,6,7])
+// const A = new Matrix([2,2], [3,1,2,4])
+// const B = new Matrix([2,1], [3,4])
 
 // const A = new Matrix([6,6], [2,5,3,7,3,7,7,7,1,7,7,0,5,4,2,4,3,5,4,10,1,6,7,6,8,2,5,2,6,9,6,3,4,1,5,5])
 
 // Matrix.log(A.inverse)
 // console.log(A.determinant)
 
-// Matrix.log(Matrix.crossMultiply(A, B))
+// Matrix.log(Matrix.multiply(A.inverse,B))
