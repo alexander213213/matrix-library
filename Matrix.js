@@ -1,12 +1,12 @@
 
 class Matrix {
     constructor(shape = [1,1], arr) {
-        this.shape = shape
+        this.shape = shape.slice(0,2)
         this.isSquare = this.shape[0] == this.shape[1]
         this.__array = arr.slice(0, shape[0] * shape[1])
         this.value = []
 
-        let length = shape[0] * shape[1]
+        let length = shape[0] * shape[1] 
         
         if (arr.length < length) return
 
@@ -18,15 +18,38 @@ class Matrix {
     }
 
     get length() {
-        return this.value.length
+        return this.__array.length
+    }
+    
+    getRow(index) {
+        if (index >= this.shape[0]) return
+        return this.value[index]
     }
 
     getColumn(index) {
+        if (index >= this.shape[1]) return
         let result = []
         for (let row of this.value) {
             result.push(row[index])
         }
         return result
+    }
+
+    reshape(shape) {
+        if (shape[0] * shape[1] != this.shape[0] * this.shape[1]) return
+        this.shape = shape.slice(0,2)
+        this.isSquare = this.shape[0] == this.shape[1]
+        this.value = []
+
+        let length = shape[0] * shape[1] 
+        
+        if (this.__array.length < length) return
+
+        let newArr = this.__array.slice(0, length)
+        for (let i=0; i<shape[0]; i++) {
+            this.value.push(newArr.slice(0, shape[1]))
+            newArr.splice(0, shape[1])
+        }
     }
     
     get determinant() {
@@ -73,6 +96,26 @@ class Matrix {
         arr = arr.map(item => item / this.determinant)
         arr = arr.map(item => item.toFixed(3))
         return new Matrix([this.shape[0], this.shape[0]], arr)
+    }
+
+    static add(A, B) {
+        if (A.shape != B.shape) return
+        let arr = A.__array.map((item, index) => item + B.__array[index])
+        return new Matrix(A.shape, arr)
+    }
+    static subtract(A, B) {
+        if (A.shape != B.shape) return
+        let arr = A.__array.map((item, index) => item * B.__array[index])
+        return new Matrix(A.shape, arr)
+    }
+
+    static scalarMultipy(A, scalar) {
+        let arr = A.__array.map(item => item * scalar)
+        return new Matrix(A.shape, arr)
+    }
+    static scalarDivide(A, scalar) {
+        let arr = A.__array.map(item => item / scalar)
+        return new Matrix(A.shape, arr)
     }
 
     static multiply(A, B) {
