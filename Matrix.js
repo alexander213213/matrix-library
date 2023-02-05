@@ -197,9 +197,9 @@ class Matrix {
 
 
 // const A = new Matrix([3,3], [1,0,-3,2,-2,1,0,-1,3])
-const A = new Matrix([2,3], [3,1,3,2,4,4])
+// const A = new Matrix([2,3], [3,1,3,2,4,4])
 // Matrix.log(A)
-Matrix.log(Matrix.rref(A))
+// Matrix.log(Matrix.rref(A))
 // const B = new Matrix([2,1], [3,4])
 
 // const A = new Matrix([6,6], [2,5,3,7,3,7,7,7,1,7,7,0,5,4,2,4,3,5,4,10,1,6,7,6,8,2,5,2,6,9,6,3,4,1,5,5])
