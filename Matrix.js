@@ -146,6 +146,40 @@ class Matrix {
         const K = new Matrix([2,2], [A.__array[0], A.__array[1], B.__array[0], B.__array[1]])
         return new Matrix([1,3], [I.determinant,-1 * J.determinant, K.determinant])
     }
+
+    static rref(A) {
+        if (A.shape[1] < 2) return
+
+        let matrix = A.value
+        let leadIndex = 0
+        function findLead(matrix, index) {
+            for (let row in matrix) {
+                if (row < index) continue
+                if (matrix[row][index] == 0) {
+                    continue
+                } else {
+                    leadIndex = row
+                    break
+                }
+            }
+        }
+        for (let i in matrix) { 
+            findLead(matrix, i)
+            let lead = matrix.splice(leadIndex, 1)
+            lead = lead[0].map(item => item/lead[0][i]).map(item => parseFloat(item.toFixed(3)))
+            matrix.splice(i, 0, lead)
+            for (let row in matrix) {
+                if (row == i) continue
+                // let subtractorRow = / lead[i]
+                let newRow = matrix[row].map((item, index) => item - (lead[index] * (matrix[row][i]))).map(item => parseFloat(item.toFixed(3)));
+                matrix.splice(row, 1, newRow)
+            }
+            // console.log(matrix)
+        }
+        let newArr = []
+        matrix.map(row => {newArr = [...newArr, ...row]})
+        return new Matrix(A.shape, newArr)
+    }
     
     static log(matrix) {
         let result = "[\n"
@@ -163,7 +197,9 @@ class Matrix {
 
 
 // const A = new Matrix([3,3], [1,0,-3,2,-2,1,0,-1,3])
-// const A = new Matrix([2,2], [3,1,2,4])
+const A = new Matrix([2,3], [3,1,3,2,4,4])
+// Matrix.log(A)
+Matrix.log(Matrix.rref(A))
 // const B = new Matrix([2,1], [3,4])
 
 // const A = new Matrix([6,6], [2,5,3,7,3,7,7,7,1,7,7,0,5,4,2,4,3,5,4,10,1,6,7,6,8,2,5,2,6,9,6,3,4,1,5,5])
