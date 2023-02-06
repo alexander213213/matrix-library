@@ -222,6 +222,6 @@ class Matrix {
 
 
 // const A = new Matrix([3,3], [1,0,-3,2,-2,1,0,-1,3])
-// const A = new Matrix([2,2], [1,3,2,2])
+// const A = new Matrix([2,2], [1,3,2,2])   
 // Matrix.log(A.replaceColumn(0, [5,6]).determinant / A.determinant)
 // Matrix.log(Matrix.scalarMultiply(A, 3))
