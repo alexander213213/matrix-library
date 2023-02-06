@@ -51,6 +51,17 @@ class Matrix {
             newArr.splice(0, shape[1])
         }
     }
+
+    replaceColumn(index, arr) {
+        if (this.shape[0] != arr.length) return
+        let matrix = JSON.parse(JSON.stringify(this.value))
+        let newArr = []
+        for (let row of matrix) {
+            row.splice(index, 1, arr[index])
+            newArr = [...newArr, ...row]
+        }
+        return new Matrix(this.shape, newArr)
+    }
     
     get determinant() {
         if (!this.isSquare) return
@@ -66,7 +77,7 @@ class Matrix {
                 let lowMatrix = new Matrix([this.shape[0]-1, this.shape[1]-1], newArr)
                 result += holder * this.__array[i] * lowMatrix.determinant
             }
-            return result.toFixed(0)
+            return parseFloat(result.toFixed(3))
         }
     }
     
@@ -94,22 +105,22 @@ class Matrix {
             }
         }
         arr = arr.map(item => item / this.determinant)
-        arr = arr.map(item => item.toFixed(3))
+        arr = arr.map(item => parseFloat(item.toFixed(3)))
         return new Matrix([this.shape[0], this.shape[0]], arr)
     }
 
     static add(A, B) {
-        if (A.shape != B.shape) return
+        if (A.shape[0] != B.shape[0] && A.shape[1] == B.shape[1]) return
         let arr = A.__array.map((item, index) => item + B.__array[index])
         return new Matrix(A.shape, arr)
     }
     static subtract(A, B) {
-        if (A.shape != B.shape) return
+        if (A.shape[0] != B.shape[0] && A.shape[1] == B.shape[1]) return
         let arr = A.__array.map((item, index) => item * B.__array[index])
         return new Matrix(A.shape, arr)
     }
 
-    static scalarMultipy(A, scalar) {
+    static scalarMultiply(A, scalar) {
         let arr = A.__array.map(item => item * scalar)
         return new Matrix(A.shape, arr)
     }
@@ -133,7 +144,7 @@ class Matrix {
             }
         }
 
-        product = product.map(item => item.toFixed(3))
+        product = product.map(item => parseFloat(item.toFixed(3)))
         return new Matrix([A.shape[0], B.shape[1]],product)
     }
 
@@ -150,7 +161,7 @@ class Matrix {
     static rref(A) {
         if (A.shape[1] < 2) return
 
-        let matrix = A.value
+        let matrix = JSON.parse(JSON.stringify(A.value))
         let leadIndex = 0
         function findLead(matrix, index) {
             for (let row in matrix) {
@@ -182,13 +193,16 @@ class Matrix {
     }
     
     static log(matrix) {
-        let result = "[\n"
-        for (let row of matrix.value) {
-            let str = "  [" + row.toString().split(",").map(s => "\x1b[38;2;194;119;48m" + s + "\x1b[0m").join(", ") + "]\n" 
-            result += str
+        if (typeof(matrix) != "object") {console.log(matrix)}
+        else {
+            let result = "[\n"
+            for (let row of matrix.value) {
+                let str = "  [" + row.toString().split(",").map(s => "\x1b[38;2;194;119;48m" + s + "\x1b[0m").join(", ") + "]\n" 
+                result += str
+            }
+            result += "]"
+            console.log(result)
         }
-        result += "]"
-        console.log(result)
     }
 
 }
@@ -197,14 +211,6 @@ class Matrix {
 
 
 // const A = new Matrix([3,3], [1,0,-3,2,-2,1,0,-1,3])
-// const A = new Matrix([2,3], [3,1,3,2,4,4])
-// Matrix.log(A)
-// Matrix.log(Matrix.rref(A))
-// const B = new Matrix([2,1], [3,4])
-
-// const A = new Matrix([6,6], [2,5,3,7,3,7,7,7,1,7,7,0,5,4,2,4,3,5,4,10,1,6,7,6,8,2,5,2,6,9,6,3,4,1,5,5])
-
-// Matrix.log(A.inverse)
-// console.log(A.determinant)
-
-// Matrix.log(Matrix.multiply(A.inverse,B))
+// const A = new Matrix([2,2], [1,3,2,2])
+// Matrix.log(A.replaceColumn(0, [5,6]))
+// Matrix.log(Matrix.scalarMultiply(A, 3))
