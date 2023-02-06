@@ -56,9 +56,9 @@ class Matrix {
         if (this.shape[0] != arr.length) return
         let matrix = JSON.parse(JSON.stringify(this.value))
         let newArr = []
-        for (let row of matrix) {
-            row.splice(index, 1, arr[index])
-            newArr = [...newArr, ...row]
+        for (let row in matrix) {
+            matrix[row].splice(index, 1, arr[row])
+            newArr = [...newArr, ...matrix[row]]
         }
         return new Matrix(this.shape, newArr)
     }
@@ -223,5 +223,5 @@ class Matrix {
 
 // const A = new Matrix([3,3], [1,0,-3,2,-2,1,0,-1,3])
 // const A = new Matrix([2,2], [1,3,2,2])
-// Matrix.log(A.replaceRow(0, [5,6]))
+// Matrix.log(A.replaceColumn(0, [5,6]).determinant / A.determinant)
 // Matrix.log(Matrix.scalarMultiply(A, 3))
