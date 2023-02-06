@@ -62,6 +62,17 @@ class Matrix {
         }
         return new Matrix(this.shape, newArr)
     }
+
+    replaceRow(index, arr) {
+        if (this.shape[1] != arr.length) return
+        let matrix = JSON.parse(JSON.stringify(this.value))
+        matrix.splice(index, 1, arr)
+        let newArr = []
+        for (let row of matrix) {
+            newArr = [...newArr, ...row]
+        }
+        return new Matrix(this.shape, newArr)
+    }
     
     get determinant() {
         if (!this.isSquare) return
@@ -212,5 +223,5 @@ class Matrix {
 
 // const A = new Matrix([3,3], [1,0,-3,2,-2,1,0,-1,3])
 // const A = new Matrix([2,2], [1,3,2,2])
-// Matrix.log(A.replaceColumn(0, [5,6]))
+// Matrix.log(A.replaceRow(0, [5,6]))
 // Matrix.log(Matrix.scalarMultiply(A, 3))
