@@ -1,0 +1,25 @@
+{
+  "name": "matrix-library",
+  "version": "1.0.0",
+  "description": "A very intuitive library for matrix manipulation. This follows most standards in mathematics to make it easy for mathematicians to use.",
+  "type": "module",
+  "main": "Matrix.js",
+  "scripts": {
+    "test": "node ./test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexander213213/matrix-library.git"
+  },
+  "keywords": [
+    "matrix",
+    "linear-algebra",
+    "matrix manipulation"
+  ],
+  "author": "Alexander Gracilla",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexander213213/matrix-library/issues"
+  },
+  "homepage": "https://github.com/alexander213213/matrix-library#readme"
+}
