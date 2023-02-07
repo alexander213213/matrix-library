@@ -1,6 +1,6 @@
 
 class Matrix {
-    constructor(shape = [1,1], arr) {
+    constructor(shape = [1,1], arr = [0]) {
         this.shape = shape.slice(0,2)
         this.isSquare = this.shape[0] == this.shape[1]
         this.__array = arr.slice(0, shape[0] * shape[1])
@@ -50,6 +50,28 @@ class Matrix {
             this.value.push(newArr.slice(0, shape[1]))
             newArr.splice(0, shape[1])
         }
+    }
+
+    insertColumn(index, arr) {
+        if (arr.length != this.shape[0]) return
+        let matrix = JSON.parse(JSON.stringify(this.value))
+        let newArr = []
+        for (let row in matrix) {
+            matrix[row].splice(index, 0, arr[row])
+            newArr = [...newArr, ...matrix[row]]
+        }
+        return new Matrix([this.shape[0],this.shape[1]+1], newArr)
+    }
+    
+    insertRow(index, arr) {
+        if (arr.length != this.shape[1]) return
+        let matrix = JSON.parse(JSON.stringify(this.value))
+        matrix.splice(index, 0, arr)
+        let newArr = []
+        for (let row of matrix) {
+            newArr = [...newArr, ...row]
+        }
+        return new Matrix([this.shape[0]+1,this.shape[1]], newArr)
     }
 
     replaceColumn(index, arr) {
@@ -218,10 +240,4 @@ class Matrix {
 
 }
 
-
-
-
-// const A = new Matrix([3,3], [1,0,-3,2,-2,1,0,-1,3])
-// const A = new Matrix([2,2], [1,3,2,2])   
-// Matrix.log(A.replaceColumn(0, [5,6]).determinant / A.determinant)
-// Matrix.log(Matrix.scalarMultiply(A, 3))
+module.exports = Matrix
