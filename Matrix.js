@@ -1,5 +1,4 @@
-
-export class Matrix {
+class Matrix {
     constructor(shape = [1,1], arr = [0]) {
         this.shape = shape.slice(0,2)
         this.isSquare = this.shape[0] == this.shape[1]
@@ -237,5 +236,6 @@ export class Matrix {
             console.log(result)
         }
     }
-
 }
+
+module.export = Matrix
