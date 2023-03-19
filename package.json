@@ -1,6 +1,6 @@
 {
   "name": "matrix-library",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A very intuitive library for matrix manipulation. This follows most standards in mathematics to make it easy for mathematicians to use.",
   "main": "Matrix.js",
   "scripts": {
