@@ -238,4 +238,4 @@ class Matrix {
     }
 }
 
-module.export = Matrix
+module.exports = Matrix
