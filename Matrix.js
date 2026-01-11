@@ -112,6 +112,20 @@ class Matrix {
             return parseFloat(result.toFixed(3))
         }
     }
+
+    get transpose() {
+        let rows = this.shape[0]
+        let cols = this.shape[1]
+        let result = []
+
+        for (let j = 0; j < cols; j++) {
+            for (let i = 0; i < rows; i++) {
+                result.push(this.value[i][j])
+            }
+        }
+
+        return new Matrix([cols, rows], result)
+    }
     
     get inverse() {
         if (!this.isSquare) return
